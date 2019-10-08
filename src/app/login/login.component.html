@@ -1,0 +1,61 @@
+<!--sign in area-->
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex="25" fxFlex.sm="40" fxFlex.xs="80" class="mat-card card-padding-shrink mat-elevation-z2">
+
+    <form fxLayout="column" style="padding: 15px" [formGroup]="loginForm" (ngSubmit)="onLoggedin(loginForm.value)">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <img fxFlex="40" class="app-avatar" src="assets/images/logodiu.png" alt="image" width="100%" height="100%">
+      </div><br>
+
+      <div class="app-title">User Info App</div>
+      <br>
+
+      <!--input area-->
+      <mat-form-field style="font-size: 14px">
+        <input matInput placeholder="User Email" name="email" formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field style="font-size: 14px">
+        <input type="password" matInput placeholder="Password" name="password" formControlName="password">
+      </mat-form-field>
+      <!--input area-->
+
+      <div fxLayoutAlign="center center">
+        <button type="submit" fxFlex="50" fxFlex.xs="80" mat-raised-button color="primary">
+          Log in
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+
+      <div fxLayoutAlign="end center">
+        <a (click)="openResetPwUi()">Forgot Password ?</a>
+      </div>
+
+    </form>
+
+    <!--register account-->
+    <div fxLayout="column" style="background: #3C4EB0; padding: 25px">
+      <span style="color: white; text-align: center">Don't have a account ?</span>
+      <button fxFlex mat-raised-button [routerLink]="['/signup']">Register</button>
+    </div>
+    <!--register account-->
+
+  </div>
+</div>
+<!--sign in area-->
+
+
+
+
+
+<!--reset pw-->
+<div *ngIf="showResetPw" fxLayout="row" fxLayoutAlign="center center">
+  <form fxFlex="20" fxLayout="column" style="padding: 15px" [formGroup]="sendEmailForm">
+    <mat-form-field style="font-size: 14px">
+      <input matInput placeholder="User Email" name="email" formControlName="sendEmail">
+    </mat-form-field>
+
+    <button flex="50" (click)="sendEmail()">Send Email</button>
+  </form>
+</div>
+<!--reset pw-->

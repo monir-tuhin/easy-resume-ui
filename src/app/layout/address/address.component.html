@@ -1,0 +1,107 @@
+<div style="flex-direction: row;">
+  <h2 align="center">Person</h2><mat-divider></mat-divider><br>
+
+
+  <div *ngIf="!showPersonalInfo">
+    <div fxLayout="column" fxFlex="80" fxFlexOffset="10" class="mat-card mat-elevation-z2">
+      <h4 align="center">Personal Info<mat-divider></mat-divider></h4>
+      <!--<pre>{{ personalInfo | json}}</pre>-->
+      <div *ngIf="!updateUi">
+        <div align="right">
+          <button mat-button color="primary" (click)="toEditPerson(personalInfo)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+        </div>
+
+        <div class="line-pad" fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Name</div>
+            <div fxFlex="70">: &nbsp; {{personalInfo.name}}</div>
+          </div>
+          <div fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Email</div>
+            <div fxFlex="70">: &nbsp; {{personalInfo.email}}</div>
+          </div>
+        </div>
+
+        <div class="line-pad" fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Date of Birth</div>
+            <div fxFlex="70">: &nbsp; {{dob}}</div>
+          </div>
+          <div fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Phone</div>
+            <div fxFlex="70">: &nbsp; {{personalInfo.phone}}</div>
+          </div>
+        </div>
+
+        <div class="line-pad" fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Blood Group</div>
+            <div fxFlex="70">: &nbsp; {{personalInfo.bloodGroup}}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="updateUi">
+        <form fxLayout="column" style="padding: 15px" [formGroup]="personUpdateForm" (ngSubmit)="updatePersonInfo(personUpdateForm.value)">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex="48">
+              <input matInput placeholder="Name" formControlName="name">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="48">
+              <input matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex="48">
+              <input matInput [matDatepicker]="dobPicker" placeholder="Choose a birth date"
+                     formControlName="dob">
+              <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dobPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="48">
+              <input matInput placeholder="Phone No." formControlName="phone">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex="48">
+              <mat-select placeholder="Select blood group" formControlName="bloodGroup">
+                <mat-option *ngFor="let bloodGroup of bloodGroupList" [value]="bloodGroup">
+                  {{bloodGroup}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxLayoutAlign="center center">
+            <button type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" [disabled]="personUpdateForm.invalid">
+              <mat-icon>update</mat-icon>
+              Update
+            </button>&nbsp;&nbsp;
+
+            <button type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="warn" (click)="cancelUpdate()">
+              <mat-icon>cancel</mat-icon>
+              Cancel
+            </button>
+          </div>
+
+          <pre>{{ personUpdateForm.value | json}}</pre>
+
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+a {
+  text-decoration: none;
+  color: rgb(63, 81, 181);
+  padding: 20px 0 0 0;
+}
+
+a:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.app-avatar{
+  border-radius: 50%;
+  border: 2px solid #c7cacd;
+}
+
+.app-title {
+  text-align: center;
+  color: #283593;
+  font-size: 24px;
+}
+
+.mat-card.card-padding-shrink {
+  padding: 0px 0px 0px 0px;
+}

@@ -1,0 +1,11 @@
+mat-expansion-panel-header {
+  border-bottom: 1px solid #8cc5f4;
+}
+
+.layout-margin-bottom {
+  margin-bottom: 10px;
+}
+
+.layout-margin-topbottom {
+  margin: 10px 0 10px 0
+}

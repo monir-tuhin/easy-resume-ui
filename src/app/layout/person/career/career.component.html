@@ -1,0 +1,286 @@
+<mat-accordion>
+
+  <!--career summary-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Career Summary
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--career summary info-->
+    <div *ngIf="careerSummary.length > 0 && !isShowCareerSumForm" fxLayout="column">
+      <div fxLayoutAlign="end">
+        <button mat-button color="primary" class="btn-small" (click)="toEditCareerSummary(careerSummary[0])"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+      </div>
+      <div>{{careerSummary[0].careerSummary}}</div>
+    </div>
+    <!--career summary info-->
+
+    <!--career summary save-->
+    <div *ngIf="careerSummary.length == 0">
+      <pre>{{ careerSummaryForm.value | json}}</pre>
+
+      <form fxLayout="column" style="padding: 15px" [formGroup]="careerSummaryForm">
+        <mat-form-field fxFlex>
+          <textarea matInput placeholder="Career Summary" rows="4" formControlName="careerSummary"> </textarea>
+        </mat-form-field>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveCareerSummary()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--career summary save-->
+
+    <!--career summary update-->
+    <div *ngIf="isShowCareerSumForm">
+      <pre>{{ careerSummaryForm.value | json}}</pre>
+
+      <form fxLayout="column" style="padding: 15px" [formGroup]="careerSummaryForm">
+        <mat-form-field fxFlex>
+          <textarea matInput placeholder="Career Summary" rows="4" formControlName="careerSummary"> </textarea>
+        </mat-form-field>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateCareerSummary()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button> &nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeCareerSummaryForm()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--career summary update-->
+
+  </mat-expansion-panel>
+  <!--career summary-->
+
+  <!--special skills-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Special Skills
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div fxFlex="60" fxFlexOffset="20">
+      <!--selected skill info-->
+      <div *ngIf="!isShowSkillForm">
+
+        <mat-list>
+          <mat-list-item *ngFor="let selectedSpecialSkill of selectedSpecialSkillList; let i = index">
+            <div fxFlex="80">
+              <span fxFlex class="skills-label"> Skill {{i+1}}</span>
+              <span fxFlex="85">: &nbsp;&nbsp;{{selectedSpecialSkill.skill}}</span>
+            </div>
+            <div fxFlex fxLayoutAlign="end">
+              <button mat-button color="primary" class="btn-small" (click)="toEditSelectedSkill(selectedSpecialSkill)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+              <button mat-button color="warn" class="btn-small" (click)="deleteSelectedSkill(selectedSpecialSkill)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+
+       <!-- <div  fxLayout="column" *ngFor="let selectedSpecialSkill of selectedSpecialSkillList; let i = index">
+
+          <div fxLayout="row" fxLayoutAlign="space-between start">
+
+
+
+            <div>
+             <span class="title-label-sm"> Skill {{i+1}} : &nbsp;&nbsp;&nbsp;</span>
+             <span>{{selectedSpecialSkill.skill}}</span>
+            </div>
+            <div fxLayoutAlign="end">
+              <button mat-button color="primary" class="btn-small" (click)="toEditSelectedSkill(selectedSpecialSkill)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+              <button mat-button color="warn" class="btn-small" (click)="deleteSelectedSkill(selectedSpecialSkill)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+            </div>
+          </div>
+
+        </div>-->
+      </div>
+      <!--selected skill info-->
+
+      <!--skill save & update-->
+      <div *ngIf="isShowSkillForm">
+        <!--<pre>{{ skillForm.value | json}}</pre>-->
+
+        <pre>{{skillControl.value}}</pre>
+        <pre>{{user.value}}</pre>
+
+        <form fxLayout="column" style="padding: 15px">
+          <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Pick Your Skill" [formControl]="skillControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.skill">
+                {{ option.skill }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <div fxFlex fxLayout="row" fxLayoutAlign="center">
+            <button *ngIf="isShowSpecialSkillUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+                    (click)="saveSpecialSkill()"><mat-icon>save</mat-icon>Save
+            </button>
+            <button *ngIf="!isShowSpecialSkillUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+                    (click)="updateSpecialSkill()"><mat-icon>update</mat-icon>Update
+            </button>&nbsp;&nbsp;
+
+            <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeSpecialSkillForm()">
+              <mat-icon>cancel</mat-icon>
+              Close
+            </button>
+          </div>
+
+
+        </form>
+      </div>
+      <!--skill save & update-->
+
+      <!--add button-->
+      <div [hidden]="selectedSpecialSkillList.length >= 10">
+        <div *ngIf="!isShowSkillForm" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+          <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addSpecialSkill()" style="color: #3C4EB0; background: #E8EAF6">
+            <mat-icon>add</mat-icon>Add Skill</button>
+        </div>
+      </div>
+      <!--add button-->
+    </div>
+
+  </mat-expansion-panel>
+  <!--special skills-->
+
+  <!--references-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        References
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--get references-->
+    <div *ngIf="!isShowReferencesForm">
+      <div  fxLayout="column" *ngFor="let reference of referenceList; let i = index">
+
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div class="title-label-md">Reference {{i+1}}</div>
+          <div fxLayoutAlign="end">
+            <button mat-button color="primary" class="btn-small" (click)="toEditReference(reference)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+            <button mat-button color="warn" class="btn-small" (click)="deleteReference(reference)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Name</div>
+            <div fxFlex="70">: &nbsp; {{reference.name}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Designation</div>
+            <div fxFlex="70">: &nbsp; {{reference.designation}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Organization</div>
+            <div fxFlex="70">: &nbsp; {{reference.organization}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Contact Number</div>
+            <div fxFlex="70">: &nbsp; {{reference.contactNumber}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Email</div>
+            <div fxFlex="70">: &nbsp; {{reference.email}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Relation</div>
+            <div fxFlex="70">: &nbsp; {{reference.relation}}</div>
+          </div>
+        </div><br>
+
+      </div>
+    </div>
+    <!--get references-->
+
+    <!--save and update reference-->
+    <div *ngIf="isShowReferencesForm">
+      <form fxLayout="column" style="padding: 15px" [formGroup]="referenceForm">
+        <pre>{{ referenceForm.value | json}}</pre>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Designation" formControlName="designation">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Organization" formControlName="organization">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Contact Number" formControlName="contactNumber">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <mat-select placeholder="Select Relation" formControlName="relation">
+              <mat-option [value]="">--Select--</mat-option>
+              <mat-option *ngFor="let relation of relationList" [value]="relation">{{ relation }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button *ngIf="isShowUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveReference()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+          <button *ngIf="!isShowUpdateBtn" type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateReference()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button> &nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeReferenceForm()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--save and update reference-->
+
+    <!--add button-->
+    <div [hidden]="referenceList.length >= 2">
+      <div *ngIf="!isShowReferencesForm" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+        <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addReference()" style="color: #3C4EB0; background: #E8EAF6">
+          <mat-icon>add</mat-icon>Add Reference</button>
+      </div>
+    </div>
+    <!--add button-->
+
+    <pre>{{ referenceForm.value | json}}</pre>
+
+  </mat-expansion-panel>
+  <!--references-->
+
+
+</mat-accordion>
+

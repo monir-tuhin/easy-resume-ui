@@ -1,0 +1,448 @@
+<mat-accordion>
+
+  <!--academic Info-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Academic Summary
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+
+    <!--get academic info-->
+    <div *ngIf="!isShowSaveEducation">
+      <div  fxLayout="column" *ngFor="let education of educationList; let i = index">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div class="title-label-md">Academic {{i+1}}</div>
+          <div fxLayoutAlign="end">
+            <button mat-button color="primary" class="btn-small" (click)="toEditEducation(education)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+            <button mat-button color="warn" class="btn-small" (click)="deleteEducation(education)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxFlex="48">
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Level of Education</div>
+              <div fxFlex="65">: &nbsp; {{education.educationLevel.educationLevel}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Exam/Degree Title</div>
+              <div fxFlex="65">: &nbsp; {{education.exam.exam}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Concentration/ Major/ Group </div>
+              <div fxFlex="65">: &nbsp; {{education.major}}</div>
+            </div>
+            <div *ngIf="education.board != null" class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Board</div>
+              <div fxFlex="65">: &nbsp; {{education.board}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Institute Name</div>
+              <div fxFlex="65">: &nbsp; {{education.institute}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Achievement</div>
+              <div fxFlex="65">: &nbsp; {{education.achievement}}</div>
+            </div>
+          </div>
+
+          <div fxLayout="column" fxFlex="48">
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Result</div>
+              <div fxFlex="65">: &nbsp; {{education.result}}</div>
+            </div>
+            <div *ngIf="education.resultType != 'Grade'" class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Marks</div>
+              <div fxFlex="65">: &nbsp; {{education.marks}}</div>
+            </div>
+            <div *ngIf="education.resultType == 'Grade'" class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">CGPA</div>
+              <div fxFlex="65">: &nbsp; {{education.cgpa}}</div>
+            </div>
+            <div *ngIf="education.resultType == 'Grade'" class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Scale</div>
+              <div fxFlex="65">: &nbsp; {{education.scale}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Passing Year</div>
+              <div fxFlex="65">: &nbsp; {{education.passingYear}}</div>
+            </div>
+            <div class="label-padding" fxLayout="row" fxFlex="48">
+              <div fxFlex="35" class="tex-label">Duration (Years)</div>
+              <div fxFlex="65">: &nbsp; {{education.duration}}</div>
+            </div>
+          </div>
+        </div><br>
+
+      </div>
+      <!--get academic info-->
+    </div>
+
+      <!--save and update academic info-->
+      <div *ngIf="isShowSaveEducation">
+        <form fxLayout="column" style="padding: 15px" [formGroup]="academicForm">
+          <pre>{{ academicForm.value | json}}</pre>
+
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="column" fxFlex="47">
+              <mat-form-field fxFlex>
+                <mat-select placeholder="Select Education Level" formControlName="educationLevel"
+                            (selectionChange)="getExamByEducationLevel(academicForm.value.educationLevel)">
+                  <mat-option [value]="null">-- None --</mat-option>
+                  <mat-option *ngFor="let educationLevel of educationLevelList" [value]="educationLevel._id">
+                    {{educationLevel.educationLevel}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field fxFlex>
+                <mat-select placeholder="Select Exam/Degree" formControlName="exam">
+                  <mat-option [value]="null">-- None --</mat-option>
+                  <mat-option *ngFor="let exam of examListByEduLevel" [value]="exam._id">
+                    {{exam.exam}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput placeholder="Concentration/Major/Group" formControlName="major">
+              </mat-form-field>
+              <mat-form-field *ngIf="isShowBoard" fxFlex>
+                <mat-select placeholder="Select Board" formControlName="board">
+                  <mat-option [value]="null">-- None --</mat-option>
+                  <mat-option *ngFor="let board of boardList" [value]="board">
+                    {{board}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput placeholder="Institute" formControlName="institute">
+              </mat-form-field>
+            </div>
+
+            <div fxLayout="column" fxFlex="47">
+
+              <div>
+                <span class="cs-text-label-color">Result Type :</span>
+                <mat-radio-group class="example-radio-group" required="true" name="result_type" formControlName="resultType">
+                  <mat-radio-button class="example-radio-button" *ngFor="let resultType of resultTypeList" [value]="resultType"
+                                    (click)="radioResultTypeChangeAction(resultType)">
+                    {{resultType}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <mat-form-field fxFlex>
+                <mat-select placeholder="Select Result" formControlName="result">
+                  <mat-option [value]="null">-- None --</mat-option>
+                  <mat-option *ngFor="let result of resultList" [value]="result">
+                    {{result}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex  *ngIf="academicForm.value.resultType == 'Division'">
+                <input matInput placeholder="Marks" formControlName="marks">
+              </mat-form-field>
+
+              <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="academicForm.value.resultType == 'Grade'">
+                <mat-form-field fxFlex="47">
+                  <input matInput placeholder="CGPA" formControlName="cgpa">
+                </mat-form-field>
+                <mat-form-field fxFlex="47">
+                  <mat-select placeholder="Select Scale" formControlName="scale">
+                    <mat-option [value]="null">-- None --</mat-option>
+                    <mat-option *ngFor="let gradeScale of gradeScaleList" [value]="gradeScale">
+                      {{gradeScale}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <mat-form-field fxFlex>
+                <input matInput placeholder="Passing Year" formControlName="passingYear">
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput placeholder="Duration (Years)" formControlName="duration">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex>
+              <textarea matInput rows="3" placeholder="Achievement" formControlName="achievement"></textarea>
+            </mat-form-field>
+          </div>
+
+
+          <div fxFlex fxLayout="row" fxLayoutAlign="center">
+            <button *ngIf="isShowEducationUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveEducation()">
+              <mat-icon>save</mat-icon>
+              Save
+            </button>
+            <button *ngIf="!isShowEducationUpdateBtn" type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateEducation()">
+              <mat-icon>update</mat-icon>
+              Update
+            </button> &nbsp;&nbsp;
+            <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeEducation()">
+              <mat-icon>cancel</mat-icon>
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+      <!--save and update academic info-->
+
+      <!--add education button-->
+      <div *ngIf="!isShowSaveEducation" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+        <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addEducation()" style="color: #3C4EB0; background: #E8EAF6">
+          <mat-icon>add</mat-icon>Add Education</button>
+      </div>
+      <!--add education button-->
+
+  </mat-expansion-panel>
+  <!--academic Info-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--training summary-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Training Summary
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--get training info-->
+    <div *ngIf="!isShowSaveTrnSummary">
+      <div  fxLayout="column" *ngFor="let trnSummary of trnSummaryList; let i = index">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div class="title-label-md">Training Summary {{i+1}}</div>
+          <div fxLayoutAlign="end">
+            <button mat-button color="primary" class="btn-small" (click)="toEditTrnSummary(trnSummary)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+            <button mat-button color="warn" class="btn-small" (click)="deleteTrnSummary(trnSummary)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Training Title</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.trainingTitle}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Country</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.country}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Topics Covered</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.topics}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Training Year</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.trainingYear}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Institute</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.institute}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Duration</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.duration}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Location</div>
+            <div fxFlex="70">: &nbsp; {{trnSummary.location}}</div>
+          </div>
+        </div><br>
+      </div>
+    </div>
+    <!--get training info-->
+
+    <!--save and update training summary-->
+    <div *ngIf="isShowSaveTrnSummary">
+      <form fxLayout="column" style="padding: 15px" [formGroup]="trnSummaryForm">
+        <pre>{{ trnSummaryForm.value | json}}</pre>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Training Title" formControlName="trainingTitle">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Country" formControlName="country">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Topics Covered" formControlName="topics">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Training Year" formControlName="trainingYear">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Institute" formControlName="institute">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Duration" formControlName="duration">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Location" formControlName="location">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button *ngIf="isShowTrnSummaryUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveTrnSummary()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+          <button *ngIf="!isShowTrnSummaryUpdateBtn" type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateTrnSummary()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button> &nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeTrnSummary()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--save and update training summary-->
+
+    <!--add training button-->
+    <div *ngIf="!isShowSaveTrnSummary" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+      <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addTranSummary()" style="color: #3C4EB0; background: #E8EAF6">
+        <mat-icon>add</mat-icon>Add Training</button>
+    </div>
+    <!--add training button-->
+
+  </mat-expansion-panel>
+  <!--training summary-->
+
+  <!--professional certification summary-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Professional Certification
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--get professional certification info-->
+    <div *ngIf="!isShowSaveProfCert">
+      <div  fxLayout="column" *ngFor="let profCert of profCertificationList; let i = index">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div class="title-label-md">Certification {{i+1}}</div>
+          <div fxLayoutAlign="end">
+            <button mat-button color="primary" class="btn-small" (click)="toEditProfCertification(profCert)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+            <button mat-button color="warn" class="btn-small" (click)="deleteProfCertification(profCert)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Certification</div>
+            <div fxFlex="70">: &nbsp; {{profCert.certification}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Institute</div>
+            <div fxFlex="70">: &nbsp; {{profCert.institute}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Certification Period</div>
+            <div fxFlex="70">: &nbsp; {{profCert.certPeriodFrom | date}} <span class="tex-label">&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;</span>
+              {{profCert.certPeriodTo | date}}
+            </div>
+          </div>
+        </div><br>
+      </div>
+    </div>
+    <!--get professional certification info-->
+
+    <!--save and update professionalCertification-->
+    <div *ngIf="isShowSaveProfCert">
+      <form fxLayout="column" style="padding: 15px" [formGroup]="profCertForm">
+        <pre>{{ profCertForm.value | json}}</pre>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Certification" formControlName="certification">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Institute" formControlName="institute">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxFlex="47" fxLayout="column">
+            <div class="tex-label">Certification Period</div>
+            <div fxFlex="row" fxLayoutAlign="space-between center">
+              <mat-form-field fxFlex="48">
+                <input matInput [matDatepicker]="certFrom" placeholder="From"
+                       formControlName="certPeriodFrom">
+                <mat-datepicker-toggle matSuffix [for]="certFrom"></mat-datepicker-toggle>
+                <mat-datepicker #certFrom></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <input matInput [matDatepicker]="certTo" placeholder="To"
+                       formControlName="certPeriodTo">
+                <mat-datepicker-toggle matSuffix [for]="certTo"></mat-datepicker-toggle>
+                <mat-datepicker #certTo></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button *ngIf="isShowProfCertUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveProfCertification()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+          <button *ngIf="!isShowProfCertUpdateBtn" type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateProfCertification()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button> &nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeProfCertification()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--save and update professionalCertification-->
+
+    <!--add prof certification button-->
+    <div *ngIf="!isShowSaveProfCert" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+      <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addProfCertification()" style="color: #3C4EB0; background: #E8EAF6">
+        <mat-icon>add</mat-icon>Add Professional Certification</button>
+    </div>
+    <!--add prof certification button-->
+
+  </mat-expansion-panel>
+  <!--professional certification summary-->
+
+
+</mat-accordion>

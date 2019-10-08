@@ -1,0 +1,172 @@
+<div style="flex-direction: row;">
+
+
+  <div fxFlex="70" fxFlexOffset="15" style="margin: 68px 0 5px 0">
+    <a [href]="pdfOpenLink" mat-raised-button color="accent" (click)="writePdf()"target="_blank"><mat-icon>picture_as_pdf</mat-icon>&nbsp;Open With PDF</a>
+  </div>
+
+  <div class="mat-card mat-elevation-z2 card-padding-shrink font-desc" fxFlex="70" fxFlexOffset="15" fxLayout="row">
+    <!--left portion-->
+    <div class="left" fxFlex="33">
+
+      <div class="img-stl" align="center">
+        <img [src]="imageViewAfterUpload" class="round-image" alt="image" height="200" width="200">
+      </div>
+
+      <div>
+        <div class="title-text-left title-padding-top">ABOUT </div>
+        <!--<div class="padding-top"></div>-->
+        <p class="about-text">{{careerSummary.careerSummary}}</p>
+      </div>
+
+      <div>
+        <div class="title-text-left title-padding-top">MAILING ADDRESS</div>
+        <!--<div class="padding-top"></div>-->
+
+        <p class="about-text"><span>{{addressInfo.details}}</span>,&nbsp;<span>{{addressInfo.post?.postName}}</span>,&nbsp;
+          <span>{{addressInfo.upazila?.upazilaName}}</span>,&nbsp;<span>{{addressInfo.district?.districtName}}</span>-<span>
+          {{addressInfo.post?.postCode}}</span></p>
+        <div><img class="social-icon" src="assets/images/phone.png" alt="" height="20">{{cvPersonInfo.phone}}</div>
+        <div><img class="social-icon" src="assets/images/email.png" alt="" height="20">{{cvPersonInfo.email}}</div>
+      </div>
+
+      <div>
+        <div class="title-text-left title-padding-top">FOLLOW ME</div>
+        <div class="padding-top"></div>
+        <div *ngFor="let icon of socialLinkInfo">
+          <img class="social-icon" [src]="imagePath + icon.socialSite.icon" alt="" height="20" />{{icon.link}}
+        </div>
+      </div>
+
+      <div>
+        <div class="title-text-left title-padding-top">SKILLS</div>
+        <div class="padding-top"></div>
+        <div *ngFor="let skill of skills">
+          <div class="padding-skills"><span>{{skill.skill}}</span></div>
+        </div>
+
+      </div>
+
+
+    </div>
+    <!--left portion-->
+
+    <!--right portion-->
+    <div fxFlex="67">
+
+      <!--cv title-->
+      <div class="cv-title-area">
+        <div class="cv-name">{{cvPersonInfo.name}}</div>
+        <div class="line-style" align="center"></div>
+        <div class="cv-profession">{{cvPersonInfo.cvTitle}}</div>
+      </div>
+      <!--cv title-->
+
+      <!--experience-->
+      <div>
+        <div class="right-side-title">
+          <img class="social-icon" src="/assets/images/experiences.png" alt="" height="25">Experiences
+        </div>
+
+        <div class="total-year-ex">Total Year of Experience : {{totalExperience}} Year(s)</div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between start" class="title-row" *ngFor="let employment of employmentInfo">
+          <div fxFlex="25" class="year">
+            <span>{{employment.jobPeriodFrom | date: 'MMM yyyy'}}</span> -
+            <span *ngIf="employment.currentlyWorking == true">Continue</span>
+            <span *ngIf="employment.currentlyWorking != true">{{employment.jobPeriodTo | date: 'MMM yyyy'}}</span>
+          </div>
+
+          <div fxFlex="72">
+            <div class="organization">{{employment.companyName}}</div>
+            <div class="designation">{{employment.designation}}</div>
+            <div style="text-align: justify"><span style="color: #4b4b4b; font-style: italic">Responsibilities :&nbsp;</span>
+              {{employment.responsibilities}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--experience-->
+
+      <!--training-->
+      <div>
+        <div class="right-side-title" style="margin: 0 0 10px 0">
+          <img class="social-icon" src="/assets/images/training.png" alt="" height="25">Training
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between start" class="title-row" *ngFor="let training of trainingInfo">
+          <div fxFlex="25" class="year">{{training.trainingYear}}</div>
+
+          <div fxFlex="72">
+            <div class="organization">{{training.trainingTitle}}</div>
+            <div class="designation">{{training.institute}}</div>
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+              <div fxFlex="49"><span style="color: #4b4b4b; font-style: italic">Location :&nbsp;</span>{{training.location}}</div>
+              <div fxFlex="49"><span style="color: #4b4b4b; font-style: italic">Duration :&nbsp;</span>{{training.duration}}</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--training-->
+
+      <!--education-->
+      <div style="padding-bottom: 15px">
+        <div class="right-side-title">
+          <img class="social-icon" src="/assets/images/education.png" alt="" height="25">Educations
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between start" class="title-row" style="padding: 10px 0 0 10px" *ngFor="let education of educationInfo">
+          <div fxFlex="25" class="year">{{education.passingYear}}</div>
+
+          <div fxFlex="72" *ngIf="education.board == '' ">
+            <div class="organization">{{education.institute}}</div>
+            <div class="designation">{{education.exam?.exam}} in {{education.major}}</div>
+          </div>
+
+          <div fxFlex="72" *ngIf="education.board != '' ">
+            <div class="organization">{{education.institute}}</div>
+            <div class="row" fxLayoutAlign="space-between start">
+              <div fxFlex="49" class="designation">{{education.exam?.exam}} in {{education.major}}</div>
+              <div fxFlex="49" class="designation"><span style="font-style: italic; padding-right: 10px">Board :</span>{{education.board}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--education-->
+
+      <!--reference-->
+      <div>
+        <div class="right-side-title">
+          <img class="social-icon" src="/assets/images/reference.png" alt="" height="25">Reference
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start" style="padding-left: 10px">
+
+          <div fxFlex="49" style="padding-top: 10px" *ngFor="let reference of referenceInfo">
+            <div style="font-size: 14px; font-weight: 600; padding-bottom: 5px">{{reference.name}}
+              <span style="font-size: 11px; font-weight: bold; color: #4a4a4a">{{reference.designation}}</span></div>
+            <div><span style="color: #4b4b4b; font-style: italic">Organization :&nbsp;</span>{{reference.organization}}</div>
+            <div><span style="color: #4b4b4b; font-style: italic">Relation :&nbsp;</span>{{reference.relation}}</div>
+            <div><span style="color: #4b4b4b; font-style: italic">Contact No :&nbsp;</span>{{reference.contactNumber}}</div>
+          </div>
+
+        </div>
+      </div>
+      <!--reference-->
+
+
+
+    </div>
+    <!--right portion-->
+  </div>
+
+</div>
+
+
+
+<!--
+<div fxLayout="row">
+  <a mat-raised-button color="primary" href="http://localhost:3000/api/pdfGenerate/showPdf"
+     target="_blank">Open With PDF</a>
+</div>-->

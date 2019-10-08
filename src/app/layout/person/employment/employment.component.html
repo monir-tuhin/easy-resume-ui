@@ -1,0 +1,122 @@
+<mat-accordion>
+
+  <!--employment summary-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Employment Summary
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--get employments-->
+    <div *ngIf="!isShowSaveExpe">
+      <div  fxLayout="column" *ngFor="let employment of employmentList; let i = index">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div class="title-label-md">Experience {{i+1}}</div>
+          <div fxLayoutAlign="end">
+            <button mat-button color="primary" class="btn-small" (click)="toEditEmployment(employment)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+            <button mat-button color="warn" class="btn-small" (click)="deleteEmployment(employment)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Company Name</div>
+            <div fxFlex="70">: &nbsp; {{employment.companyName}}</div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Designation</div>
+            <div fxFlex="70">: &nbsp; {{employment.designation}}</div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Employment Period</div>
+            <div fxFlex="70">: &nbsp; {{employment.jobPeriodFrom | date}} <span class="tex-label">&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;</span>
+              <span *ngIf="employment.currentlyWorking != true">{{employment.jobPeriodTo | date}}</span>
+              <span *ngIf="employment.currentlyWorking == true">Continuing</span>
+            </div>
+          </div>
+          <div class="label-padding" fxLayout="row" fxFlex="48">
+            <div fxFlex="30" class="tex-label">Responsibilities</div>
+            <div fxFlex="70">: &nbsp; {{employment.responsibilities}}</div>
+          </div>
+        </div><br>
+      </div>
+    </div>
+    <!--get employments-->
+
+    <!--save and update employment-->
+    <div *ngIf="isShowSaveExpe">
+      <form fxLayout="column" style="padding: 15px" [formGroup]="employmentForm">
+        <pre>{{ employmentForm.value | json}}</pre>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Company Name" formControlName="companyName">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Designation" formControlName="designation">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxFlex="47" fxLayout="column">
+            <div class="tex-label">Employment Period</div>
+            <div fxFlex="row" fxLayoutAlign="space-between center">
+              <mat-form-field fxFlex="48">
+                <input matInput [matDatepicker]="jobTimeFrom" placeholder="From"
+                       formControlName="jobPeriodFrom">
+                <mat-datepicker-toggle matSuffix [for]="jobTimeFrom"></mat-datepicker-toggle>
+                <mat-datepicker #jobTimeFrom></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48"  *ngIf="employmentForm.value.currentlyWorking == null || employmentForm.value.currentlyWorking == false">
+                <input matInput [matDatepicker]="jobTimeTo" placeholder="To"
+                       formControlName="jobPeriodTo">
+                <mat-datepicker-toggle matSuffix [for]="jobTimeTo"></mat-datepicker-toggle>
+                <mat-datepicker #jobTimeTo></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="employmentForm.value.currentlyWorking == true" fxFlex="48" style="padding: 5px; background: #e9e9e9">Continuing</div>
+            </div>
+
+            <section>
+              <mat-checkbox formControlName="currentlyWorking">Currently Working</mat-checkbox>
+            </section>
+          </div>
+
+          <mat-form-field fxFlex="47">
+            <input matInput placeholder="Responsibilities" formControlName="responsibilities">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button *ngIf="isShowUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" (click)="saveEmployment()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+          <button *ngIf="!isShowUpdateBtn" type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" (click)="updateEmployment()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button> &nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="close()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--save and update employment-->
+
+    <!--add button-->
+    <div *ngIf="!isShowSaveExpe" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+      <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addExperience()" style="color: #3C4EB0; background: #E8EAF6">
+        <mat-icon>add</mat-icon>Add Experience (If Required)</button>
+    </div>
+    <!--add button-->
+
+
+  </mat-expansion-panel>
+  <!--employment summary-->
+
+
+</mat-accordion>

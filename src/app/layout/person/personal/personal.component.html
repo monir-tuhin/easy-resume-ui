@@ -1,0 +1,318 @@
+<mat-accordion>
+
+  <!--personal details-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Personal Details
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngIf="!upadatePersonalUI">
+      <div align="right">
+        <button mat-button color="primary" (click)="toEditPerson(personalInfo)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="label-padding" fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">Name</div>
+          <div fxFlex="70">: &nbsp; {{personalInfo.name}}</div>
+        </div>
+        <div fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">Email</div>
+          <div fxFlex="70">: &nbsp; {{personalInfo.email}}</div>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="label-padding" fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">Date of Birth</div>
+          <div fxFlex="70">: &nbsp; {{dob}}</div>
+        </div>
+        <div fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">Phone</div>
+          <div fxFlex="70">: &nbsp; {{personalInfo.phone}}</div>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="label-padding" fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">Blood Group</div>
+          <div fxFlex="70">: &nbsp; {{personalInfo.bloodGroup}}</div>
+        </div>
+        <div class="label-padding" fxLayout="row" fxFlex="48">
+          <div fxFlex="30" class="tex-label">CV Title</div>
+          <div fxFlex="70">: &nbsp; {{personalInfo.cvTitle}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="upadatePersonalUI">
+      <form fxLayout="column" style="padding: 15px" [formGroup]="personUpdateForm" (ngSubmit)="updatePersonInfo(personUpdateForm.value)">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="48">
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48">
+            <input matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="48">
+            <input matInput [matDatepicker]="dobPicker" placeholder="Choose a birth date"
+                   formControlName="dob">
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48">
+            <input matInput placeholder="Phone No." formControlName="phone">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="48">
+            <mat-select placeholder="Select blood group" formControlName="bloodGroup">
+              <mat-option *ngFor="let bloodGroup of bloodGroupList" [value]="bloodGroup">
+                {{bloodGroup}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48">
+            <input matInput placeholder="CV Title" formControlName="cvTitle">
+          </mat-form-field>
+        </div>
+
+        <div fxLayoutAlign="center center">
+          <button type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="primary" [disabled]="personUpdateForm.invalid">
+            <mat-icon>update</mat-icon>
+            Update
+          </button>&nbsp;&nbsp;
+
+          <button type="submit" fxFlex="20" fxFlex.xs="50" mat-raised-button color="warn" (click)="cancelUpdate()">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+          </button>
+        </div>
+
+        <pre>{{ personUpdateForm.value | json}}</pre>
+
+
+      </form>
+    </div>
+  </mat-expansion-panel>
+  <!--personal details-->
+
+  <!--address-->
+  <mat-expansion-panel (opened)="panelOpenState = true"  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Address Details
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <!--address data show-->
+    <div *ngIf="!upadateAddressUI">
+      <div *ngIf="addressInfo.length > 0">
+        <div align="right">
+          <button mat-button color="primary" (click)="toEditAddress(addressInfo)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxFlex="48">
+            <div class="tex-label">Mailing Address</div>
+            <div style="font-size: 16px">
+              {{addressInfo[0].details}}, {{addressInfo[0].post.postName}},
+              {{addressInfo[0].upazila.upazilaName}}, {{addressInfo[0].district.districtName}} - {{addressInfo[0].post.postCode}}
+            </div>
+          </div>
+          <div fxFlex="48">
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!--address data show-->
+
+    <!--save address-->
+    <div *ngIf="addressInfo.length == 0">
+      <form fxFlex="45" fxLayout="column" style="padding: 15px" [formGroup]="addressForm">
+        <pre>{{ addressForm.value | json}}</pre>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select District" formControlName="district" (selectionChange)= "getUpazilaListByDistrict( addressForm.value.district)">
+            <mat-option *ngFor="let district of districtList" [value]="district._id">
+              {{district.districtName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select Upazila" formControlName="upazila" (selectionChange)= "getPostListByDistrictAndUpazila( addressForm.value.district, addressForm.value.upazila)">
+            <mat-option *ngFor="let upazila of upazilaListByDistrict" [value]="upazila._id">
+              {{upazila.upazilaName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select Post" formControlName="post">
+            <mat-option *ngFor="let post of postListByDistrictAndUpazila" [value]="post._id">
+              {{post.postName}} ({{post.postCode}})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Details" formControlName="details">
+        </mat-form-field>
+
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" [disabled]="addressForm.invalid"
+                  (click)="saveAddress()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>&nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="close()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--save address-->
+
+    <!--update address-->
+    <div *ngIf="upadateAddressUI">
+      <form fxFlex="45" fxLayout="column" style="padding: 15px" [formGroup]="addressForm">
+        <pre>{{ addressForm.value | json}}</pre>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select District" formControlName="district" (selectionChange)= "getUpazilaListByDistrict( addressForm.value.district)">
+            <mat-option *ngFor="let district of districtList" [value]="district._id">
+              {{district.districtName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select Upazila" formControlName="upazila" (selectionChange)= "getPostListByDistrictAndUpazila( addressForm.value.district, addressForm.value.upazila)">
+            <mat-option *ngFor="let upazila of upazilaListByDistrict" [value]="upazila._id">
+              {{upazila.upazilaName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Select Post" formControlName="post">
+            <mat-option *ngFor="let post of postListByDistrictAndUpazila" [value]="post._id">
+              {{post.postName}} ({{post.postCode}})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Details" formControlName="details">
+        </mat-form-field>
+
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="center">
+          <button type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary" [disabled]="addressForm.invalid"
+                  (click)="updateAddress()">
+            <mat-icon>update</mat-icon>
+            Update
+          </button>&nbsp;&nbsp;
+          <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="close()">
+            <mat-icon>cancel</mat-icon>
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--update address-->
+  </mat-expansion-panel>
+  <!--address-->
+
+  <!--social links-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header style=" background-color: #BBDEFB;">
+      <mat-panel-title>
+        Social Links
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div fxFlex="80" fxFlexOffset="10">
+      <!--social links info-->
+      <div *ngIf="!isShowSocialLinkForm">
+
+        <mat-list>
+          <mat-list-item *ngFor="let socialLink of socialLinkList; let i = index">
+            <div fxFlex="90" class="socialLink-font">
+              <span fxFlex class="socialLink-label">
+                 <img class="example-option-img" aria-hidden [src]="imagePath + socialLink.socialSite.icon" height="25">
+                {{socialLink.socialSite.siteName}}
+              </span>
+              <span fxFlex="80">: &nbsp;&nbsp;{{socialLink.link}}</span>
+            </div>
+            <div fxFlex fxLayoutAlign="end">
+              <button mat-button color="primary" class="btn-small" (click)="toEditSocialLink(socialLink)"><mat-icon style="font-size: 18px">edit</mat-icon>Edit</button>
+              <button mat-button color="warn" class="btn-small" (click)="deleteSocialLink(socialLink)"><mat-icon style="font-size: 18px">delete</mat-icon>Delete</button>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <!--social links info-->
+
+      <!--social links save & update-->
+      <div *ngIf="isShowSocialLinkForm">
+
+        <form fxFlex="60" fxFlexOffset="20" fxLayout="column" style="padding: 15px" [formGroup]="socialLinkForm">
+          <pre>{{ socialLinkForm.value | json}}</pre>
+
+          <mat-form-field fxFlex>
+              <mat-select placeholder="Select Social Site" formControlName="socialSiteId">
+                <mat-option *ngFor="let socialSite of socialSiteList" [value]="socialSite.id">
+                  <img class="example-option-img" aria-hidden [src]="imagePath + socialSite.icon" height="25">
+                  <span>{{socialSite.siteName}}</span>
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Social Link" formControlName="link">
+          </mat-form-field>
+
+          <div fxFlex fxLayout="row" fxLayoutAlign="center">
+            <button *ngIf="isShowSocialLInkUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+                    (click)="saveSocialLink()"><mat-icon>save</mat-icon>Save
+            </button>
+            <button *ngIf="!isShowSocialLInkUpdateBtn" type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+                    (click)="updateSocialLink()"><mat-icon>update</mat-icon>Update
+            </button>&nbsp;&nbsp;
+
+            <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="closeSocialLinkForm()">
+              <mat-icon>cancel</mat-icon>
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+      <!--social links save & update-->
+
+      <!--add button-->
+      <div [hidden]="socialLinkList.length >= 5">
+        <div *ngIf="!isShowSocialLinkForm" fxLayout="row" fxLayoutAlign="center" style="margin-top: 15px">
+          <button fxFlex="30" fxFlex.xs="90" mat-raised-button (click)="addSocialLink()" style="color: #3C4EB0; background: #E8EAF6">
+            <mat-icon>add</mat-icon>Add Social Link</button>
+        </div>
+      </div>
+      <!--add button-->
+    </div>
+
+  </mat-expansion-panel>
+  <!--social links-->
+
+</mat-accordion>
+

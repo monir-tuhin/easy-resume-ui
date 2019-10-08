@@ -1,0 +1,20 @@
+<div style="flex-direction: row" class="elli">
+  <h2 align="center">DB Input</h2><mat-divider></mat-divider><br>
+
+  <div fxFlex="80" fxFlexOffset="10" class="mat-card mat-elevation-z1">
+    <nav mat-tab-nav-bar class="demo-tab-group">
+      <a mat-tab-link
+         *ngFor="let link of navLinks"
+         [routerLink]="link.link"
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive">
+        {{link.label}}
+      </a>
+    </nav>
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+</div>
+

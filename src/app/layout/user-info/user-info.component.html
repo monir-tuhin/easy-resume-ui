@@ -1,0 +1,28 @@
+<div style="flex-direction: row;">
+  <h2 align="center">User Info list</h2><mat-divider></mat-divider><br>
+
+  <div fxFlex="60" fxFlexOffset="20">
+
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+
+      <!-- email Column -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </div>
+
+</div>
+
+
+

@@ -1,0 +1,62 @@
+.example-container {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /*right: 0;*/
+}
+
+mat-sidenav {
+background: linear-gradient(to right, rgba(0, 4, 70, 0.54), rgba(2, 76, 65, 0.54) );
+  width: 270px;
+}
+
+mat-sidenav a {
+  display: block;
+  text-decoration: none;
+  padding: 10px 15px ;
+  color: white;
+  font-size: 15px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-sidenav a:hover {
+  background: linear-gradient(to right, rgba(32, 35, 101, 0.93), rgba(52, 135, 124, 0.94));
+  color: #1DE9B6;
+}
+
+span a:hover {
+  font-weight: bold;
+  cursor: default;
+  color: #00BFA5;
+}
+
+.sidenav-header {
+  background: #28347e;
+  color: #fff;
+  padding: 21px 5px 22px 10px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+.toolbar-padding {
+  padding: 0 14px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.router-link-active {
+  background: linear-gradient(to right, rgba(32, 35, 101, 0.93), rgba(52, 135, 124, 0.94));
+}
+
+
+.ellipsis {
+  position: fixed;
+  width: 100%;
+}
+
+/*style="z-index: 1; position: fixed;  overflow: inherit;"*/

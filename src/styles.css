@@ -1,0 +1,11 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html, body {
+ background-color: #E3E6E3;
+ font-family: sans-serif;
+}
+
+/*pre {
+  font-size: 0;
+}*/
+

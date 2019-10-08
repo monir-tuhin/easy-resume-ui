@@ -1,0 +1,23 @@
+<div style="flex-direction: row;">
+  <mat-card fxFlex="40" fxFlexOffset="30">
+    <div class="signup-title">Sign up Panel</div><mat-divider></mat-divider>
+
+    <form fxLayout="column" [formGroup]="createUserForm" (ngSubmit)="saveUser()">
+      <mat-form-field>
+        <input matInput placeholder="Name" name="name" formControlName="name">
+      </mat-form-field>
+      <mat-form-field >
+        <input type="email" matInput placeholder="Email" name="email" formControlName="email">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" matInput placeholder="Password" name="password" formControlName="password">
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <button type="submit" fxFlex="35" mat-raised-button color="primary">Create User</button>
+        <button fxFlex="35" mat-raised-button color="primary" [routerLink]="['/login']">Log in</button>
+      </div>
+    </form>
+  </mat-card>
+
+</div>

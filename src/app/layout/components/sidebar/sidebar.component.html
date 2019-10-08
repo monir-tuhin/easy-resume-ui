@@ -1,0 +1,60 @@
+<mat-sidenav-container class="example-container">
+
+  <mat-sidenav class="sidenav-prop" #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
+               (closed)="events.push('close!')">
+
+    <div class="sidenav-header">
+      <div fxLayout="row" fxLayoutAlign="space-between start">
+        <span>User Info</span>
+        <mat-icon style="font-size: 26px; margin-top: -5px; cursor: pointer;" (click)="sidenav.close()">close</mat-icon>
+      </div>
+    </div>
+
+    <div><a [routerLink]="['/dashboard']" [routerLinkActive]="['router-link-active']" (click)="sidenav.close()">Dashboard</a></div>
+    <div><a [routerLink]="['/dbInput']" [routerLinkActive]="['router-link-active']" (click)="sidenav.close()">DB Input</a></div>
+    <div><a [routerLink]="['/userInfo']" [routerLinkActive]="['router-link-active']" (click)="sidenav.close()">User List</a></div>
+    <div><a [routerLink]="['/person']" [routerLinkActive]="['router-link-active']" (click)="sidenav.close()">Edit CV</a></div>
+    <div><a [routerLink]="['/cvTemplate']" [routerLinkActive]="['router-link-active']" (click)="sidenav.close()">CV Template</a></div>
+
+  </mat-sidenav>
+
+
+  <!--header toolbar-->
+  <mat-toolbar color="primary" class="ellipsis">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.open()">
+        <mat-icon style="font-size: 26px" aria-label="menu icon">menu</mat-icon>
+      </button>&nbsp;
+      <span>User Info</span>
+
+      <span class="toolbar-spacer"></span>
+
+      <!--menues bar for large device-->
+      <div class="toolbar-padding">
+        <button mat-icon-button [matMenuTriggerFor]="menuLarge">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menuLarge="matMenu" [overlapTrigger]="false">
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Setting</span>
+          </button>
+
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item [routerLink]="['/login']" (click)="onLoggedout()">
+            <mat-icon>power_settings_new</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+      <!--menues bar for large device-->
+    </mat-toolbar-row>
+
+
+
+  </mat-toolbar>
+  <!--header toolbar-->
+
+</mat-sidenav-container>
+

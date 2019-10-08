@@ -1,0 +1,65 @@
+<div class="line-pad" fxLayout="row" fxLayoutAlign="space-between start">
+  <form fxFlex="45" fxLayout="column" style="padding: 15px" [formGroup]="educationLevelForm">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Education Level" formControlName="educationLevel">
+    </mat-form-field>
+
+    <div *ngIf="!isShowEducationLevelUpdate" fxFlex fxLayout="row" fxLayoutAlign="center">
+      <button type="submit" fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+              (click)="saveEducationLevel()">
+        <mat-icon>save</mat-icon>
+        Save
+      </button>&nbsp;&nbsp;
+      <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="clearEducationLevelFields()">
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+    </div>
+    <div *ngIf="isShowEducationLevelUpdate" fxFlex fxLayout="row" fxLayoutAlign="center">
+      <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="primary"
+              (click)="updateEducationLevel()">
+        <mat-icon>update</mat-icon>
+        Update
+      </button>&nbsp;&nbsp;
+      <button fxFlex="25" fxFlex.xs="50" mat-raised-button color="warn" (click)="clearEducationLevelFields()">
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <div fxFlex="45">
+    <table mat-table [dataSource]="educationLevelDataSource" class="mat-elevation-z1">
+
+      <ng-container matColumnDef="sl">
+        <th mat-header-cell *matHeaderCellDef> SL </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="educationLevel">
+        <th mat-header-cell *matHeaderCellDef> Education Level </th>
+        <td mat-cell *matCellDef="let element"> {{element.educationLevel}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="goToEditEducationLevel(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteEducationLevel(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsEducationLevel"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsEducationLevel;"></tr>
+
+    </table>
+
+    <mat-paginator #educationLevelPaginatorId [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+
+</div>
