@@ -8,10 +8,21 @@
       </mat-form-field>
       <mat-form-field >
         <input type="email" matInput placeholder="Email" name="email" formControlName="email">
+        <mat-error *ngIf="createUserForm.get('email').hasError('pattern')">Invalid Email</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input type="password" matInput placeholder="Password" name="password" formControlName="password">
+        <input type="password" matInput placeholder="Password" required="true" name="password" formControlName="password">
+        <mat-error *ngIf="createUserForm.get('password').hasError('pattern')">
+          Minimum eight characters, at least one letter, one number and one special character.
+        </mat-error>
       </mat-form-field>
+ <!--     <mat-form-field>
+        <input type="password" matInput placeholder="Re-type Password" formControlName="retypePassword" required="true">
+        <mat-error *ngIf="createUserForm.controls['retypePassword'].errors?.MatchPassword">
+          Password does't match
+        </mat-error>
+      </mat-form-field>-->
+
 
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <button type="submit" fxFlex="35" mat-raised-button color="primary">Create User</button>

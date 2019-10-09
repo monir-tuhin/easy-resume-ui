@@ -28,7 +28,7 @@
       </div>
 
       <div fxLayoutAlign="end center">
-        <a (click)="openResetPwUi()">Forgot Password ?</a>
+        <a (click)="openForgotPwUi()">Forgot Password ?</a>
       </div>
 
     </form>
@@ -43,19 +43,3 @@
   </div>
 </div>
 <!--sign in area-->
-
-
-
-
-
-<!--reset pw-->
-<div *ngIf="showResetPw" fxLayout="row" fxLayoutAlign="center center">
-  <form fxFlex="20" fxLayout="column" style="padding: 15px" [formGroup]="sendEmailForm">
-    <mat-form-field style="font-size: 14px">
-      <input matInput placeholder="User Email" name="email" formControlName="sendEmail">
-    </mat-form-field>
-
-    <button flex="50" (click)="sendEmail()">Send Email</button>
-  </form>
-</div>
-<!--reset pw-->

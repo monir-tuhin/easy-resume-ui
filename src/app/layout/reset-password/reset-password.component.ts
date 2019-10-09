@@ -3,6 +3,8 @@ import {MatSnackBar} from '@angular/material';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {PasswordValidationComponent} from '../../shared/services/password-validation';
 
 @Component({
   selector: 'app-create-user',
@@ -10,9 +12,27 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
+  pwResetForm: FormGroup;
   urlToken: any = '';
 
-  constructor(private httpClient: HttpClient, private snackbar: MatSnackBar, private router: Router, private activeRoute: ActivatedRoute) { }
+  constructor(private httpClient: HttpClient, private snackbar: MatSnackBar, private router: Router,
+              private activeRoute: ActivatedRoute, private fb: FormBuilder) {
+
+    this.pwResetForm = fb.group({
+        password: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+        ])),
+        retypePassword: new FormControl('', Validators.compose([
+          Validators.required,
+        ]))
+      },
+      {
+        validator: PasswordValidationComponent.MatchPassword // your validation method
+      }
+    );
+
+  }
 
   ngOnInit() {
     this.urlToken = this.activeRoute.snapshot.queryParams.token;
@@ -20,18 +40,23 @@ export class ResetPasswordComponent implements OnInit {
   }
 
 
-  sendEmail() {
-    // console.log(this.sendEmailForm.value);
-    const myParams = new HttpParams().append('resetPasswordToken', this.urlToken)
-    this.httpClient.put(environment.apiUrl + 'resetPassword/resetPasswordByToken', {params: myParams})
+  resetPassword() {
+    const submit = {
+      resetPasswordToken: this.urlToken,
+      password: this.pwResetForm.value.password
+    };
+
+    console.log('submitDate', submit);
+    this.httpClient.put(environment.apiUrl + 'resetPassword/resetPasswordByToken', submit)
       .subscribe(res => {
-          this.snackbar.open('Email Sent', 'Close', {
-            duration: 2000
+          this.snackbar.open('Password reset successful !', 'Close', {
+            duration: 3000
           });
+          this.router.navigate(['/login']);
 
         },  msg => {
           this.snackbar.open(msg.error, 'Close', {
-            duration: 4000
+            duration: 5000
           });
           console.error(`Error: ${msg.status} ${msg.statusText}`);
         }

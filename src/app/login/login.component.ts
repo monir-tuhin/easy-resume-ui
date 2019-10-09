@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../shared/services/auth.service';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {ForgotPasswordDialogComponent} from './forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute,
-              private snackbar: MatSnackBar) { }
+              private snackbar: MatSnackBar, public dialog: MatDialog) { }
 
 
   ngOnInit() {
@@ -53,8 +54,17 @@ export class LoginComponent implements OnInit {
 
 
   // send email
-  openResetPwUi() {
-    this.showResetPw = true;
+  openForgotPwUi() {
+    /*this.showResetPw = true;*/
+    const dialogRef = this.dialog.open(ForgotPasswordDialogComponent, {
+      width: '35%',
+      disableClose: true,
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   sendEmail() {

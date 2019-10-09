@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../environments/environment';
+import {PasswordValidationComponent} from '../shared/services/password-validation';
 
 @Component({
   selector: 'app-create-user',
@@ -10,14 +11,30 @@ import {environment} from '../../environments/environment';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  createUserForm: FormGroup;
 
-  createUserForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-  });
 
-  constructor(private httpClient: HttpClient, private snackbar: MatSnackBar) { }
+  constructor(private httpClient: HttpClient, private snackbar: MatSnackBar, private fb: FormBuilder) {
+    this.createUserForm = fb.group({
+        name: new FormControl(''),
+        email: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+        ])),
+        password: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+        ])),
+       /* retypePassword: new FormControl('', Validators.compose([
+          Validators.required,
+        ]))*/
+      }
+      /*{
+        validator: PasswordValidationComponent.MatchPassword // your validation method
+      }*/
+    );
+
+  }
 
   ngOnInit() {
   }
@@ -33,6 +50,7 @@ export class SignupComponent implements OnInit {
           this.snackbar.open('Successfully signed Up', 'Close', {
             duration: 2000
           });
+          this.createUserForm.reset();
         },
         msg => {
           console.log('dddd', msg);

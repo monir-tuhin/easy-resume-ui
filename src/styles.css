@@ -9,3 +9,6 @@ html, body {
   font-size: 0;
 }*/
 
+mat-error {
+  font-size: 13px;
+}
